@@ -1,0 +1,270 @@
+1.
+
+SELECT COUNT(*)
+
+FROM users
+
+
+2.
+
+SELECT * 
+
+FROM users 
+
+ORDER BY birthDate DESC LIMIT 1
+
+3.
+
+SELECT * 
+
+FROM users 
+
+ORDER BY birthDate ASC LIMIT 1
+
+
+
+4. 
+
+Like
+
+select email, 
+		COUNT(email) as Different
+from users 
+where  ( email  like '%gmail.com' or email like '%abv.bg' )   
+group by email
+
+UNION ALL
+
+select 'Total' email,  COUNT(email) 
+from users
+where  (email  like '%gmail.com' or email  like '%abv.bg');
+
+
+Diff
+
+select email,
+		COUNT(email) as HowmanyDif
+from users 
+where ( email  not like '%gmail.com' and email not like '%abv.bg')  
+group by email
+
+UNION ALL
+
+select 'SUM' email, COUNT(email) 
+from users
+where ( email  not like '%gmail.com' and  email not like '%abv.bg');
+
+
+
+
+5.
+
+SELECT *
+
+FROM users 
+
+WHERE isBanned = true;
+
+6.
+
+SELECT  username,
+		birthDate
+
+FROM users
+ORDER BY username ASC,birthDate ASC
+
+7.
+
+SELECT username 
+
+FROM users 
+
+WHERE username LIKE 'à%'
+
+8.
+
+SELECT username
+
+FROM users 
+
+WHERE username LIKE '%a%'
+
+9.
+
+
+10.
+
+11.
+
+SELECT COUNT(id)
+FROM posts
+WHERE isDeleted = false;
+
+
+
+12.
+
+SELECT 	postStatus,
+		COUNT(id)
+FROM posts
+GROUP BY postStatus
+
+
+13.
+
+SELECT 	caption,
+		
+	LENGTH(caption) as len
+
+FROM posts
+
+WHERE LENGTH(caption) <= 1
+
+ORDER BY len ASC;
+
+
+14.
+SELECT 	caption,
+		
+	LENGTH (caption) as len
+
+FROM posts
+
+ORDER BY len DESC LIMIT 1;
+
+15.
+
+
+SELECT  users.id,
+		users.username, 
+        
+COUNT(posts.userId) as Total
+ 
+FROM   users  
+ 
+LEFT JOIN posts  
+ON users.id = posts.userId 
+
+GROUP BY users.id, users.username
+
+ORDER BY COUNT(posts.userId) DESC LIMIT 1;
+
+16. 
+
+SELECT  users.id as UserID,
+		users.username, 
+        COUNT(posts.userId) as Total
+FROM   users  
+LEFT JOIN posts  
+ON users.id = posts.userId 
+GROUP BY users.id, users.username
+ORDER BY COUNT(posts.userId) ASC ;
+
+17.
+
+SELECT  users.id,
+		users.username, 
+        COUNT(posts.userId) as Total
+FROM   users  
+LEFT JOIN posts  
+ON users.id = posts.userId 
+GROUP BY users.id, users.username
+HAVING COUNT(posts.userId) = (SELECT MIN(c)
+									FROM (SELECT COUNT(posts.userId) c
+                                    FROM posts
+									GROUP BY  userId) X);
+
+18. 
+
+SELECT  users.id,
+		users.username, 
+        COUNT(posts.userId) as Total
+FROM   users  
+LEFT JOIN posts  
+ON users.id = posts.userId 
+GROUP BY users.id, users.username
+HAVING  COUNT(posts.userId) < 5
+ORDER BY COUNT(posts.userId) ASC  ;
+
+
+19.
+
+
+    select  posts.id,
+		posts.commentsCount
+from posts
+where posts.commentsCount = (select  max(posts.commentsCount) 
+								from posts
+                               )
+ ;
+
+
+
+20.
+
+ SELECT posts.id,
+		posts.caption,
+        posts.createdAt
+ FROM posts 
+ WHERE createdAt = (SELECT min(createdAt) 
+				from posts);
+
+21.
+
+ SELECT posts.id,
+		posts.caption,
+        posts.createdAt
+ FROM posts 
+ WHERE createdAt = (SELECT max(createdAt) 
+				from posts);
+
+22.
+
+ SELECT posts.id,
+		posts.caption,
+        posts.createdAt
+ FROM posts 
+ WHERE caption IS NULL OR caption = ' ';
+
+23.
+
+24.
+
+ SELECT posts.id,
+		comments.content
+ FROM posts
+ INNER JOIN comments ON posts.id = comments.postId ;
+
+25.
+
+ SELECT posts.id,
+		comments.content
+ FROM posts
+ INNER JOIN comments ON posts.id = comments.postId
+ WHERE content IS NOT NULL;
+
+26.
+
+ SELECT users.id,
+		users.username,
+		COUNT(comments.userId)
+ FROM users
+ INNER JOIN comments ON users.id = comments.userId
+ GROUP BY users.username
+ ORDER BY COUNT(comments.userId) DESC LIMIT 1 ;
+
+27.
+
+28.
+
+29.
+
+30.
+
+31.
+
+32.
+
+33.
+
+34.
